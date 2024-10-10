@@ -19,7 +19,7 @@ const carrito = [];
 
 function mostrarProductos(categoria) {
     const productosContainer = document.getElementById('productos-container');
-    productosContainer.innerHTML = ''; // Limpiar productos existentes
+    productosContainer.innerHTML = '';
 
     productos[categoria].forEach(producto => {
         const div = document.createElement('div');
