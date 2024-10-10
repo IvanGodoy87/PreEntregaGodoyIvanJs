@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribuidora Leon</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <img src="./img/logo.svg" alt="Logo de Distribuidora Leon" class="logo">
+        <nav>
+            <ul>
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#productos">Productos</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main id="inicio">
+    <h1>Bienvenido a la Leon Distribuciones</h1>
+    <p>La mejor selección de panificados y pastas frescas.</p>
+    </main>
+
+    <section id="productos">
+        <h2>Nuestros Productos</h2>
+        <div class="categorias-container">
+            <div class="categoria" onclick="mostrarProductos('panificados')">
+                <img src="./img/panificados.jpeg" alt="Panificados">
+                <h3>Panificados</h3>
+            </div>
+            <div class="categoria" onclick="mostrarProductos('pastas')">
+                <img src="./img/pastas.jpeg" alt="Pastas Frescas">
+                <h3>Pastas Frescas</h3>
+            </div>
+            <div class="categoria" onclick="mostrarProductos('pascualinas')">
+                <img src="./img/pascualina.jpeg" alt="Pascualinas">
+                <h3>Pascualinas</h3>
+            </div>
+        </div>
+        <div class="productos-container" id="productos-container"></div>
+        <div id="carrito">
+            <h3>Carrito de Compras (<span id="carrito-count">0</span>)</h3>
+            <ul id="carrito-items"></ul>
+            <p id="total-sum">Total: $<span id="total">0.00</span></p>
+        </div>
+    </section>
+
+    <footer id="contacto">
+        <h2>Contacto</h2>
+        <p>Email: contacto@leondistribuciones.com</p>
+        <p>Teléfono: 341 153702645</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
