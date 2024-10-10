@@ -36,11 +36,26 @@ function mostrarProductos(categoria) {
 }
 
 function agregarAlCarrito(id, categoria) {
-    const cantidad = document.getElementById(`cantidad-${id}`).value;
+    const cantidadInput = document.getElementById(`cantidad-${id}`);
+    const cantidad = parseInt(cantidadInput.value, 10);
+
+    if (isNaN(cantidad) || cantidad < 1) {
+        alert('Por favor, ingresa una cantidad válida.');
+        return;
+    }
+
     const producto = productos[categoria].find(p => p.id === id);
     const total = producto.precio * cantidad;
 
-    carrito.push({ ...producto, cantidad, total });
+    // Verificar si el producto ya está en el carrito
+    const existingProduct = carrito.find(item => item.id === id && item.categoria === categoria);
+    if (existingProduct) {
+        existingProduct.cantidad = parseInt(existingProduct.cantidad) + cantidad;
+        existingProduct.total = existingProduct.precio * existingProduct.cantidad; // Actualizar total
+    } else {
+        carrito.push({ ...producto, cantidad, total, categoria });
+    }
+
     actualizarCarrito();
 }
 
@@ -62,6 +77,3 @@ function actualizarCarrito() {
 
     totalSum.textContent = sumaTotal.toFixed(2);
 }
-
-// Mostrar la opción de productos al cargar
-mostrarProductos('panificados');
