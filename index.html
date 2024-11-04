@@ -47,8 +47,19 @@
             <h3>Carrito de Compras (<span id="carrito-count">0</span>)</h3>
             <ul id="carrito-items"></ul>
             <p id="total-sum"><strong>Total: $<span id="total">0.00</strong></span></p>
+            <button onclick="comprarProductos()" id="comprar-btn">Comprar</button>
         </div>
     </section>
+    <div id="modal-compra" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="cerrarModalCompra()">&times;</span>
+            <h2>Confirmar Compra</h2>
+            <p id="mensaje-compra"></p>
+            <button onclick="finalizarCompra()">Confirmar</button>
+            <button onclick="cerrarModalCompra()">Cancelar</button>
+        </div>
+    </div>
+    
 
     <footer id="contacto">
         <h2>Contacto</h2>
