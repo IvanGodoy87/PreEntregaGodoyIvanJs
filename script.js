@@ -1,5 +1,5 @@
 let productos = {};  // Contendrá los productos cargados del archivo JSON
-const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
 document.addEventListener('DOMContentLoaded', () => {
     // Cargar los productos al inicio
@@ -7,17 +7,16 @@ document.addEventListener('DOMContentLoaded', () => {
     actualizarCarrito();
 });
 
-// Cargar productos desde el archivo JSON
-function cargarProductos() {
-    fetch('./productos.json')  // Ruta al archivo JSON
-        .then(response => response.json())
-        .then(data => {
-            productos = data;  // Asignamos los productos al objeto global
-            // Mostrar productos al cargar la página
-            mostrarProductos('panificados');  // Mostrar los productos de una categoría por defecto
-            mostrarCategorias();  // Mostrar las categorías en la interfaz
-        })
-        .catch(error => console.error('Error al cargar productos:', error));
+// Función asincrónica para cargar los productos desde el archivo JSON
+async function cargarProductos() {
+    try {
+        const response = await fetch('./productos.json');  // Ruta al archivo JSON
+        const data = await response.json();  // Convertir la respuesta a JSON
+        productos = data;  // Asignar los productos al objeto global
+        mostrarProductos('panificados');  // Mostrar los productos de una categoría por defecto
+    } catch (error) {
+        console.error('Error al cargar productos:', error);
+    }
 }
 
 // Mostrar productos de una categoría
@@ -25,27 +24,9 @@ function mostrarProductos(categoria) {
     const productosContainer = document.getElementById('productos-container');
     productosContainer.innerHTML = '';
 
-    if (productos[categoria]) {
-        productos[categoria].forEach(producto => {
-            const div = crearProductoHTML(producto, categoria);
-            productosContainer.appendChild(div);
-        });
-    } else {
-        productosContainer.innerHTML = '<p>No hay productos disponibles en esta categoría.</p>';
-    }
-}
-
-// Mostrar las categorías disponibles
-function mostrarCategorias() {
-    const categorias = Object.keys(productos);
-    const categoriasContainer = document.getElementById('categorias-container');
-    categoriasContainer.innerHTML = '';
-
-    categorias.forEach(categoria => {
-        const div = document.createElement('div');
-        div.classList.add('categoria');
-        div.innerHTML = `<h3 onclick="mostrarProductos('${categoria}')">${categoria}</h3>`;
-        categoriasContainer.appendChild(div);
+    productos[categoria].forEach(producto => {
+        const div = crearProductoHTML(producto, categoria);
+        productosContainer.appendChild(div);
     });
 }
 
@@ -91,6 +72,12 @@ function agregarAlCarrito(id, categoria) {
 // Guardar el carrito en localStorage
 function guardarCarrito() {
     localStorage.setItem('carrito', JSON.stringify(carrito));
+}
+
+// Cargar el carrito desde localStorage
+function cargarCarrito() {
+    const carritoGuardado = localStorage.getItem('carrito');
+    return carritoGuardado ? JSON.parse(carritoGuardado) : [];
 }
 
 // Actualizar el carrito en el DOM
