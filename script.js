@@ -44,7 +44,7 @@ function mostrarCategorias() {
     categorias.forEach(categoria => {
         const div = document.createElement('div');
         div.classList.add('categoria');
-        div.innerHTML = `<h3 onclick="mostrarProductos('${categoria}')">${categoria.charAt(0).toUpperCase() + categoria.slice(1)}</h3>`;
+        div.innerHTML = `<h3 onclick="mostrarProductos('${categoria}')">${categoria}</h3>`;
         categoriasContainer.appendChild(div);
     });
 }
