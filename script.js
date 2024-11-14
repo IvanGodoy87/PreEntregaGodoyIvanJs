@@ -1,35 +1,55 @@
-const productos = {
-    panificados: [
-        { id: 1, nombre: "Pan de Mesa", precio: 999, imagen: "./img/pandemesa.jpg" },
-        { id: 2, nombre: "Pan de Hamburguesa", precio: 999, imagen: "./img/panhamburguesa.jpg" },
-        { id: 3, nombre: "Pan de Pancho", precio: 999, imagen: "./img/panpancho.jpg" }
-    ],
-    pastas: [
-        { id: 1, nombre: "Fideos", precio: 999, imagen: "./img/fideos.jpg" },
-        { id: 2, nombre: "Ñoquis", precio: 999, imagen: "./img/nioquis.jpg" },
-        { id: 3, nombre: "Ravioles", precio: 999, imagen: "./img/ravioles.jpg" }
-    ],
-    pascualinas: [
-        { id: 1, nombre: "Pascualina Criolla", precio: 999, imagen: "./img/criolla.jpg" },
-        { id: 2, nombre: "Pascualina hojaldre", precio: 999, imagen: "./img/hojaldre.jpg" },
-    ],
-};
-
-// Cargar el carrito desde el Local Storage
+let productos = {};  // Contendrá los productos cargados del archivo JSON
 const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
 
-// Función para mostrar productos de una categoría
+document.addEventListener('DOMContentLoaded', () => {
+    // Cargar los productos al inicio
+    cargarProductos();
+    actualizarCarrito();
+});
+
+// Cargar productos desde el archivo JSON
+function cargarProductos() {
+    fetch('./productos.json')  // Ruta al archivo JSON
+        .then(response => response.json())
+        .then(data => {
+            productos = data;  // Asignamos los productos al objeto global
+            // Mostrar productos al cargar la página
+            mostrarProductos('panificados');  // Mostrar los productos de una categoría por defecto
+            mostrarCategorias();  // Mostrar las categorías en la interfaz
+        })
+        .catch(error => console.error('Error al cargar productos:', error));
+}
+
+// Mostrar productos de una categoría
 function mostrarProductos(categoria) {
     const productosContainer = document.getElementById('productos-container');
     productosContainer.innerHTML = '';
 
-    productos[categoria].forEach(producto => {
-        const div = crearProductoHTML(producto, categoria);
-        productosContainer.appendChild(div);
+    if (productos[categoria]) {
+        productos[categoria].forEach(producto => {
+            const div = crearProductoHTML(producto, categoria);
+            productosContainer.appendChild(div);
+        });
+    } else {
+        productosContainer.innerHTML = '<p>No hay productos disponibles en esta categoría.</p>';
+    }
+}
+
+// Mostrar las categorías disponibles
+function mostrarCategorias() {
+    const categorias = Object.keys(productos);
+    const categoriasContainer = document.getElementById('categorias-container');
+    categoriasContainer.innerHTML = '';
+
+    categorias.forEach(categoria => {
+        const div = document.createElement('div');
+        div.classList.add('categoria');
+        div.innerHTML = `<h3 onclick="mostrarProductos('${categoria}')">${categoria.charAt(0).toUpperCase() + categoria.slice(1)}</h3>`;
+        categoriasContainer.appendChild(div);
     });
 }
 
-// Genera el HTML de un producto
+// Generar el HTML de un producto
 function crearProductoHTML(producto, categoria) {
     const div = document.createElement('div');
     div.classList.add('producto');
@@ -43,7 +63,7 @@ function crearProductoHTML(producto, categoria) {
     return div;
 }
 
-// Función para agregar producto al carrito
+// Agregar un producto al carrito
 function agregarAlCarrito(id, categoria) {
     const cantidadInput = document.getElementById(`cantidad-${categoria}-${id}`);
     const cantidad = parseInt(cantidadInput.value, 10);
@@ -68,12 +88,12 @@ function agregarAlCarrito(id, categoria) {
     actualizarCarrito();
 }
 
-// Guardar el carrito en el Local Storage
+// Guardar el carrito en localStorage
 function guardarCarrito() {
     localStorage.setItem('carrito', JSON.stringify(carrito));
 }
 
-// Actualiza el carrito en el DOM y el Local Storage
+// Actualizar el carrito en el DOM
 function actualizarCarrito() {
     const carritoCount = document.getElementById('carrito-count');
     const carritoItems = document.getElementById('carrito-items');
@@ -96,16 +116,14 @@ function actualizarCarrito() {
     totalSum.textContent = sumaTotal.toFixed(2);
 }
 
-// Función para eliminar un producto del carrito
+// Eliminar un producto del carrito
 function eliminarDelCarrito(index) {
     carrito.splice(index, 1);
     guardarCarrito();
     actualizarCarrito();
 }
 
-// Al cargar la página, actualizamos el carrito con los datos almacenados en el Local Storage
-document.addEventListener('DOMContentLoaded', actualizarCarrito);
-
+// Función para mostrar el modal de compra
 function comprarProductos() {
     if (carrito.length === 0) {
         alert("El carrito está vacío. Agrega productos antes de comprar.");
@@ -116,24 +134,22 @@ function comprarProductos() {
     const mensajeCompra = document.getElementById('mensaje-compra');
     mensajeCompra.textContent = `El total de su compra es $${sumaTotal}. ¿Desea completar la compra?`;
 
-    // Mostrar el modal
     const modal = document.getElementById('modal-compra');
     modal.style.display = 'flex';
 }
 
+// Función para finalizar la compra
 function finalizarCompra() {
-    // Vaciar el carrito
     carrito.length = 0;
     guardarCarrito();
     actualizarCarrito();
 
-    // Cerrar el modal
-    cerrarModalCompra();
-
-    // Mensaje de agradecimiento
     alert("Gracias por su compra. ¡Esperamos verlo pronto!");
+
+    cerrarModalCompra();
 }
 
+// Función para cerrar el modal
 function cerrarModalCompra() {
     const modal = document.getElementById('modal-compra');
     modal.style.display = 'none';

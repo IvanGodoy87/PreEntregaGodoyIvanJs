@@ -1,0 +1,16 @@
+{
+    "panificados": [
+        { "id": 1, "nombre": "Pan de Mesa", "precio": 999, "imagen": "./img/pandemesa.jpg" },
+        { "id": 2, "nombre": "Pan de Hamburguesa", "precio": 999, "imagen": "./img/panhamburguesa.jpg" },
+        { "id": 3, "nombre": "Pan de Pancho", "precio": 999, "imagen": "./img/panpancho.jpg" }
+    ],
+    "pastas": [
+        { "id": 1, "nombre": "Fideos", "precio": 999, "imagen": "./img/fideos.jpg" },
+        { "id": 2, "nombre": "Ñoquis", "precio": 999, "imagen": "./img/nioquis.jpg" },
+        { "id": 3, "nombre": "Ravioles", "precio": 999, "imagen": "./img/ravioles.jpg" }
+    ],
+    "pascualinas": [
+        { "id": 1, "nombre": "Pascualina Criolla", "precio": 999, "imagen": "./img/criolla.jpg" },
+        { "id": 2, "nombre": "Pascualina Hojaldre", "precio": 999, "imagen": "./img/hojaldre.jpg" }
+    ]
+}
